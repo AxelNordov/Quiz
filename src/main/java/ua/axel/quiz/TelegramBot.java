@@ -26,7 +26,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 	@Override
 	public void onUpdateReceived(Update update) {
-		facade.getMethod(update).ifPresent(this::executeMethod);
+		facade.handle(update).ifPresent(this::executeMethod);
 	}
 
 	private void executeMethod(BotApiMethod<? extends Serializable> method) {
