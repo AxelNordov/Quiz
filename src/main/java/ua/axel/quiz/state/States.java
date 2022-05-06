@@ -10,9 +10,11 @@ public class States {
 
 	private final Map<String, State> stateMap = new HashMap<>();
 
-	public States(MainState mainState, MirrorState mirrorState) {
+	public States(MainState mainState, MirrorState mirrorState, GameState gameState, SettingsState settingsState) {
 		stateMap.put("mainState", mainState);
 		stateMap.put("mirrorState", mirrorState);
+		stateMap.put("gameState", gameState);
+		stateMap.put("settingsState", settingsState);
 	}
 
 	public State getState(String state) {

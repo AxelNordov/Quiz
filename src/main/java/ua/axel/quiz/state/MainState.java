@@ -11,14 +11,13 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @Component
-public class MainState extends State {
+public class MainState implements State {
 
 	@Autowired
 	private SendMessageService sendMessageService;
 
 	@Override
 	public Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update) {
-
 		if (update.hasMessage() && update.getMessage().hasText()) {
 			var message = update.getMessage();
 			var chatId = message.getChatId().toString();

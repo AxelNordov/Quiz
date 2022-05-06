@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @Component
-public class MirrorState extends State {
+public class MirrorState implements State {
 
 	@Autowired
 	private SendMessageService sendMessageService;

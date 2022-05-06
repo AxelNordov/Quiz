@@ -1,5 +1,6 @@
 package ua.axel.quiz.state;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.Facade;
@@ -7,8 +8,11 @@ import ua.axel.quiz.Facade;
 import java.io.Serializable;
 import java.util.Optional;
 
-public interface State {
+@Component
+public class GameState implements State {
 
-	Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update);
-
+	@Override
+	public Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update) {
+		return Optional.empty();
+	}
 }
