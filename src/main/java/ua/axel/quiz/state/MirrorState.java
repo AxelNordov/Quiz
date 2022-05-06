@@ -1,35 +1,34 @@
 package ua.axel.quiz.state;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.Facade;
+import ua.axel.quiz.service.SendMessageService;
 
 import java.io.Serializable;
 import java.util.Optional;
 
+@Component
 public class MirrorState extends State {
 
-	public MirrorState(Facade facade) {
-		super(facade);
-	}
+	@Autowired
+	private SendMessageService sendMessageService;
 
 	@Override
-	public Optional<BotApiMethod<? extends Serializable>> handle(Update update) {
+	public Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update) {
 		if (update.hasMessage() && update.getMessage().hasText()) {
-			if("main".equals(update.getMessage().getText())) {
-				long userId = update.getMessage().getFrom().getId();
-				facade.setUserState(userId, new MainState(facade));
-				return Optional.of(SendMessage.builder()
-						.chatId(update.getMessage().getChatId().toString())
-						.text("in Main State")
-						.build());
+			var message = update.getMessage();
+			var chatId = message.getChatId().toString();
+			if ("main".equals(message.getText())) {
+				var userId = message.getFrom().getId();
+				facade.setUserState(userId, "mainState");
+				return Optional.of(sendMessageService.getSendMessage(chatId, "[switching to Main State]"));
 			}
-			return Optional.of(SendMessage.builder()
-					.chatId(update.getMessage().getChatId().toString())
-					.text(update.getMessage().getText())
-					.build());
+			return Optional.of(sendMessageService.getSendMessage(chatId, "[Mirror] " + message.getText()));
 		}
 		return Optional.empty();
 	}
+
 }

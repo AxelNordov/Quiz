@@ -9,11 +9,6 @@ import java.util.Optional;
 
 public abstract class State {
 
-	Facade facade;
+	public abstract Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update);
 
-	public State(Facade facade) {
-		this.facade = facade;
-	}
-
-	public abstract Optional<BotApiMethod<? extends Serializable>> handle(Update update);
 }
