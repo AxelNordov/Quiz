@@ -2,6 +2,7 @@ package ua.axel.quiz.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.axel.quiz.Constants;
 import ua.axel.quiz.state.State;
 import ua.axel.quiz.state.States;
 
@@ -18,7 +19,7 @@ public class UserStateCache {
 
 	public State getUserState(long userId) {
 		if (!userStateMap.containsKey(userId) || userStateMap.get(userId) == null) {
-			setUserState(userId, "mainState");
+			setUserState(userId, Constants.MAIN_STATE);
 		}
 		return userStateMap.get(userId);
 	}

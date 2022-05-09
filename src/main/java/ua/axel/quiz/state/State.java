@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface State {
 
+	Optional<BotApiMethod<? extends Serializable>> start(Update update);
+
 	Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update);
+
+	Optional<BotApiMethod<? extends Serializable>> finish();
 
 }

@@ -5,12 +5,17 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.cache.UserStateCache;
+import ua.axel.quiz.state.State;
+import ua.axel.quiz.state.States;
 
 import java.io.Serializable;
 import java.util.Optional;
 
 @Component
 public class Facade {
+
+	@Autowired
+	private States states;
 
 	@Autowired
 	private UserStateCache userStateCache;
@@ -23,5 +28,9 @@ public class Facade {
 
 	public void setUserState(Long userId, String state) {
 		userStateCache.setUserState(userId, state);
+	}
+
+	public State getState(String state) {
+		return states.getState(state);
 	}
 }
