@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ua.axel.quiz.Constants;
 import ua.axel.quiz.Facade;
 import ua.axel.quiz.service.KeyboardService;
 import ua.axel.quiz.service.LocaleMessageService;
@@ -38,8 +37,8 @@ public class SettingsState implements State {
 		var message = update.getMessage();
 		long userId = message.getFrom().getId();
 		if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			facade.setUserState(userId, Constants.MAIN_STATE);
-			return facade.getState(Constants.MAIN_STATE).start(update);
+			facade.setUserState(userId, States.MAIN_STATE);
+			return facade.getState(States.MAIN_STATE).start(update);
 		}
 		return Optional.empty();
 	}

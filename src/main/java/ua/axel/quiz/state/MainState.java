@@ -45,14 +45,14 @@ public class MainState implements State {
 					|| text.equals(Constants.START_COMMAND)) {
 				return start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.settings-button.name"))) {
-				facade.setUserState(userId, Constants.SETTINGS_STATE);
-				return facade.getState(Constants.SETTINGS_STATE).start(update);
+				facade.setUserState(userId, States.SETTINGS_STATE);
+				return facade.getState(States.SETTINGS_STATE).start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
-				facade.setUserState(userId, Constants.GAME_STATE);
-				return facade.getState(Constants.GAME_STATE).start(update);
+				facade.setUserState(userId, States.GAME_STATE);
+				return facade.getState(States.GAME_STATE).start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.mirror-button.name"))) {
-				facade.setUserState(userId, Constants.MIRROR_STATE);
-				return facade.getState(Constants.MIRROR_STATE).start(update);
+				facade.setUserState(userId, States.MIRROR_STATE);
+				return facade.getState(States.MIRROR_STATE).start(update);
 			}
 		}
 		return Optional.empty();
