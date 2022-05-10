@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserState {
-	long id;
-	String state;
+	private long id;
+	private String state;
 }

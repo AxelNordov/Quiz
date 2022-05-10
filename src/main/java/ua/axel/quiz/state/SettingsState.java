@@ -10,12 +10,10 @@ import ua.axel.quiz.service.KeyboardService;
 import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.SendMessageService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
 public class SettingsState implements State {
-	private final String[] categories = {"English", "Japan", "Java", "Ruby"};
 	@Autowired
 	private SendMessageService sendMessageService;
 	@Autowired
@@ -49,9 +47,10 @@ public class SettingsState implements State {
 				var chatId = message.getChatId().toString();
 				var sendMessage = sendMessageService.getSendMessage(chatId, localeMessageService.getMessage("message.choose-the-category"));
 				sendMessage.enableMarkdown(true);
-				sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(categories));
+				sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(facade.getAllCategoriesNames().toArray(String[]::new)));
 				return Optional.of(sendMessage);
-			} else if (List.of(categories).contains(text)) {
+			} else if (facade.getAllCategoriesNames().contains(text)) {
+				facade.setUserCategory(userId, text);
 				facade.setUserState(userId, States.SETTINGS_STATE);
 				return start(update);
 			}
