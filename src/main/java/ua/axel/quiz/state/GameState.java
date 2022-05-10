@@ -29,7 +29,9 @@ public class GameState implements State {
 				String.format(localeMessageService.getMessage(
 						"message.you-are-in", localeMessageService.getMessage("menu.game-button.name"))));
 		sendMessage.enableMarkdown(true);
-		sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(localeMessageService.getMessage("menu.main-button.name")));
+		sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
+				localeMessageService.getMessage("menu.main-button.name"),
+				localeMessageService.getMessage("menu.next-button.name")));
 		return Optional.of(sendMessage);
 	}
 
@@ -40,6 +42,9 @@ public class GameState implements State {
 		if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.main-button.name"))) {
 			facade.setUserState(userId, Constants.MAIN_STATE);
 			return facade.getState(Constants.MAIN_STATE).start(update);
+		} else if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.next-button.name"))) {
+			var chatId = message.getChatId().toString();
+			return Optional.of(sendMessageService.getSendMessage(chatId, "Next quiz..."));
 		}
 		return Optional.empty();
 	}
