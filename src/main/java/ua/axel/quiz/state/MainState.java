@@ -26,12 +26,13 @@ public class MainState implements State {
 	public Optional<BotApiMethod<Message>> start(Update update) {
 		var message = update.getMessage();
 		var chatId = message.getChatId().toString();
-		var sendMessage = sendMessageService.getSendMessage(chatId, String.format(localeMessageService.getMessage("message.you-are-in", localeMessageService.getMessage("menu.main-button.name"))));
+		var sendMessage = sendMessageService.getSendMessage(chatId,
+				String.format(localeMessageService.getMessage(
+						"message.you-are-in", localeMessageService.getMessage("menu.main-button.name"))));
 		sendMessage.enableMarkdown(true);
 		sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
 				localeMessageService.getMessage("menu.settings-button.name"),
-				localeMessageService.getMessage("menu.game-button.name"),
-				localeMessageService.getMessage("menu.mirror-button.name")));
+				localeMessageService.getMessage("menu.game-button.name")));
 		return Optional.of(sendMessage);
 	}
 
@@ -50,9 +51,6 @@ public class MainState implements State {
 			} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
 				facade.setUserState(userId, States.GAME_STATE);
 				return facade.getState(States.GAME_STATE).start(update);
-			} else if (text.equals(localeMessageService.getMessage("menu.mirror-button.name"))) {
-				facade.setUserState(userId, States.MIRROR_STATE);
-				return facade.getState(States.MIRROR_STATE).start(update);
 			}
 		}
 		return Optional.empty();
