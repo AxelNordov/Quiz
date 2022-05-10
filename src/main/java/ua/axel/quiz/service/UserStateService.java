@@ -8,7 +8,6 @@ import ua.axel.quiz.repository.UserStateRepository;
 
 @Service
 public class UserStateService {
-
 	@Autowired
 	UserStateRepository userStateRepository;
 

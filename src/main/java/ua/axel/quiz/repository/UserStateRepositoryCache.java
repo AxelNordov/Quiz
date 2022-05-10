@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public class UserStateRepositoryCache implements UserStateRepository {
-
 	private final Map<Long, String> userStateMap = new HashMap<>();
 
 	public Optional<UserState> findById(Long id) {

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class KeyboardService {
-
 	public ReplyKeyboardMarkup getMainMenuKeyboard(String... buttonText) {
 		final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 		replyKeyboardMarkup.setSelective(true);

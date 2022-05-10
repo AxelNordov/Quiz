@@ -7,12 +7,11 @@ import java.util.Locale;
 
 @Service
 public class LocaleMessageService {
-	private Locale locale;
 	private final MessageSource messageSource;
+	private Locale locale;
 
 	public LocaleMessageService(MessageSource messageSource) {
 		this.messageSource = messageSource;
-
 	}
 
 	public String getMessage(String message) {

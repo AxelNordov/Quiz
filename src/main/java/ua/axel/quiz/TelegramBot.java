@@ -14,13 +14,10 @@ import java.io.Serializable;
 @Component
 @Getter
 public class TelegramBot extends TelegramLongPollingBot {
-
 	@Value("${telegram.bot-username}")
 	private String botUsername;
-
 	@Value("${telegram.bot-token}")
 	private String botToken;
-
 	@Autowired
 	private Facade facade;
 

@@ -3,6 +3,7 @@ package ua.axel.quiz.state;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.Constants;
 import ua.axel.quiz.Facade;
@@ -10,7 +11,6 @@ import ua.axel.quiz.service.KeyboardService;
 import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.SendMessageService;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @Component
@@ -23,7 +23,7 @@ public class MainState implements State {
 	private LocaleMessageService localeMessageService;
 
 	@Override
-	public Optional<BotApiMethod<? extends Serializable>> start(Update update) {
+	public Optional<BotApiMethod<Message>> start(Update update) {
 		var message = update.getMessage();
 		var chatId = message.getChatId().toString();
 		var sendMessage = sendMessageService.getSendMessage(chatId, String.format(localeMessageService.getMessage("message.you-are-in", localeMessageService.getMessage("menu.main-button.name"))));
@@ -36,7 +36,7 @@ public class MainState implements State {
 	}
 
 	@Override
-	public Optional<BotApiMethod<? extends Serializable>> handle(Facade facade, Update update) {
+	public Optional<BotApiMethod<Message>> handle(Facade facade, Update update) {
 		if (update.hasMessage() && update.getMessage().hasText()) {
 			var message = update.getMessage();
 			long userId = message.getFrom().getId();
@@ -55,11 +55,6 @@ public class MainState implements State {
 				return facade.getState(Constants.MIRROR_STATE).start(update);
 			}
 		}
-		return Optional.empty();
-	}
-
-	@Override
-	public Optional<BotApiMethod<? extends Serializable>> finish() {
 		return Optional.empty();
 	}
 }
