@@ -2,10 +2,7 @@ package ua.axel.quiz.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,8 +13,11 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String state;
+	@Column(name = "state_name")
+	private String stateName;
 	@ManyToOne
+	@JoinColumn(name = "category_id")
 	private Category category;
 }

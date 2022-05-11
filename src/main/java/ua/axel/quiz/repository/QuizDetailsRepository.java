@@ -2,8 +2,8 @@ package ua.axel.quiz.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ua.axel.quiz.entity.Author;
+import ua.axel.quiz.entity.QuizDetails;
 
 @Repository
-public interface SourceRepository extends CrudRepository<Author, Long> {
+public interface QuizDetailsRepository extends CrudRepository<QuizDetails, Long> {
 }

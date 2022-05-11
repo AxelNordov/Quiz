@@ -10,11 +10,13 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "category")
-public class Category {
+@Table(name = "author")
+public class Author {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "title")
 	private String title;
+	@Column(name = "link")
+	private String link;
 }
