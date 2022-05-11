@@ -9,11 +9,14 @@ import ua.axel.quiz.Facade;
 import ua.axel.quiz.service.KeyboardService;
 import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.SendMessageService;
+import ua.axel.quiz.service.UserStateService;
 
 import java.util.Optional;
 
 @Component
 public class GameState implements State {
+	@Autowired
+	private UserStateService userStateService;
 	@Autowired
 	private SendMessageService sendMessageService;
 	@Autowired
@@ -39,7 +42,7 @@ public class GameState implements State {
 		var message = update.getMessage();
 		long userId = message.getFrom().getId();
 		if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			facade.setUserState(userId, States.MAIN_STATE);
+			userStateService.setUserStateName(userId, States.MAIN_STATE);
 			return facade.getState(States.MAIN_STATE).start(update);
 		} else if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.next-button.name"))) {
 			var chatId = message.getChatId().toString();

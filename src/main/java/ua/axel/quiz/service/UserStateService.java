@@ -9,7 +9,9 @@ import ua.axel.quiz.state.States;
 @Service
 public class UserStateService {
 	@Autowired
-	UserStateRepository userStateRepository;
+	private UserService userService;
+	@Autowired
+	private UserStateRepository userStateRepository;
 
 	public UserState findById(Long userId) {
 		return userStateRepository.findById(userId)
@@ -19,5 +21,10 @@ public class UserStateService {
 
 	public void save(Long userId, String state) {
 		userStateRepository.save(UserState.builder().id(userId).state(state).build());
+	}
+
+	public void setUserStateName(Long userId, String stateName) {
+		userService.saveState(userId, stateName);
+		save(userId, stateName);
 	}
 }

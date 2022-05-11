@@ -9,7 +9,7 @@ import ua.axel.quiz.repository.UserRepository;
 @Service
 public class UserService {
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	public User findById(Long id) {
 		return userRepository.findById(id).orElseThrow();
@@ -22,10 +22,14 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void saveState(Long id, String state) {
+	public void saveState(Long id, String stateName) {
 		User user = userRepository.findById(id)
 				.orElseGet(() -> User.builder().id(id).build());
-		user.setState(state);
+		user.setStateName(stateName);
 		userRepository.save(user);
+	}
+
+	public void setUserCategory(Long userId, Category category) {
+		saveCategory(userId, category);
 	}
 }

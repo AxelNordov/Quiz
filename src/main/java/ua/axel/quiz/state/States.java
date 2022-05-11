@@ -1,5 +1,6 @@
 package ua.axel.quiz.state;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class States {
 	public static final String GAME_STATE = "game";
 	private final Map<String, State> stateMap = new HashMap<>();
 
+	@Autowired
 	public States(MainState mainState,
 	              GameState gameState,
 	              SettingsState settingsState) {

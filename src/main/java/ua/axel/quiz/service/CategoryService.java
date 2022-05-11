@@ -6,11 +6,14 @@ import ua.axel.quiz.entity.Category;
 import ua.axel.quiz.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 	@Autowired
-	CategoryRepository categoryRepository;
+	private UserService userService;
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	public Category findById(Long id) {
 		return categoryRepository.findById(id).orElseThrow();
@@ -20,11 +23,19 @@ public class CategoryService {
 		categoryRepository.save(quiz);
 	}
 
-	public Category findByName(String category) {
-		return categoryRepository.findByName(category).orElseThrow();
+	public Category findByTitle(String categoryTitle) {
+		return categoryRepository.findByTitle(categoryTitle).orElseThrow();
 	}
 
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
+	}
+
+	public List<String> getAllCategoriesTitles() {
+		return findAll().stream().map(Category::getTitle).collect(Collectors.toList());
+	}
+
+	public void setUserCategory(Long userId, String categoryTitle) {
+		userService.setUserCategory(userId, findByTitle(categoryTitle));
 	}
 }

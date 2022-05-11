@@ -8,7 +8,7 @@ import ua.axel.quiz.repository.QuizRepository;
 @Service
 public class QuizService {
 	@Autowired
-	QuizRepository quizRepository;
+	private QuizRepository quizRepository;
 
 	public Quiz findById(Long id) {
 		return quizRepository.findById(id).orElseThrow();

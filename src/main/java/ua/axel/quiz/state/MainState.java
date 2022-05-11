@@ -10,11 +10,14 @@ import ua.axel.quiz.Facade;
 import ua.axel.quiz.service.KeyboardService;
 import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.SendMessageService;
+import ua.axel.quiz.service.UserStateService;
 
 import java.util.Optional;
 
 @Component
 public class MainState implements State {
+	@Autowired
+	private UserStateService userStateService;
 	@Autowired
 	private SendMessageService sendMessageService;
 	@Autowired
@@ -46,10 +49,10 @@ public class MainState implements State {
 					|| text.equals(Constants.START_COMMAND)) {
 				return start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.settings-button.name"))) {
-				facade.setUserState(userId, States.SETTINGS_STATE);
+				userStateService.setUserStateName(userId, States.SETTINGS_STATE);
 				return facade.getState(States.SETTINGS_STATE).start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
-				facade.setUserState(userId, States.GAME_STATE);
+				userStateService.setUserStateName(userId, States.GAME_STATE);
 				return facade.getState(States.GAME_STATE).start(update);
 			}
 		}
