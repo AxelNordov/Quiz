@@ -3,6 +3,7 @@ package ua.axel.quiz.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,7 @@ public class Quiz {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "question")
+	@NotNull(message = "Question cannot be null")
 	private String question;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "quiz")
 	private List<Answer> answers;
@@ -26,6 +28,7 @@ public class Quiz {
 	private Boolean oneAnswer;
 	@ManyToOne
 	@JoinColumn(name = "category_id")
+	@NotNull(message = "Category cannot be null")
 	private Category category;
 	@ManyToOne
 	@JoinColumn(name = "topic_id")
