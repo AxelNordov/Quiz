@@ -15,6 +15,8 @@ public class QuizDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "origin_number")
+	private Integer originNumber;
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 	@Column(name = "link_1")
