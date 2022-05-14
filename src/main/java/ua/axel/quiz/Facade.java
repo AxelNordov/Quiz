@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ua.axel.quiz.entity.UserState;
 import ua.axel.quiz.service.UserStateService;
 import ua.axel.quiz.state.State;
 import ua.axel.quiz.state.States;
@@ -20,7 +21,12 @@ public class Facade {
 
 	public Optional<BotApiMethod<Message>> handle(Update update) {
 		var userId = update.getMessage().getFrom().getId();
-		var state = userStateService.findById(userId).getState();
+		UserState userState = userStateService.findById(userId);
+		if (userState == null) {
+			userStateService.setUserStateName(userId, States.MAIN_STATE);
+			return states.getState(States.MAIN_STATE).start(update);
+		}
+		var state = userState.getState();
 		var currUserState = getState(state);
 		return currUserState.handle(this, update);
 	}
