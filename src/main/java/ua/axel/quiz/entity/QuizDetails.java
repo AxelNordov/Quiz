@@ -19,8 +19,8 @@ public class QuizDetails {
 	private Integer originNumber;
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
-	@Column(name = "link_1")
-	private String link1;
-	@Column(name = "link_2")
-	private String link2;
+	@Column(name = "url_1")
+	private String url1;
+	@Column(name = "url_2")
+	private String url2;
 }

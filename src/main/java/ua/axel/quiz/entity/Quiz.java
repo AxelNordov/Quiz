@@ -24,12 +24,8 @@ public class Quiz {
 	private List<Answer> answers;
 	@Column(name = "right_answer")
 	private Byte rightAnswer;
-	@Column(name = "one_answer")
-	private Boolean oneAnswer;
-	@ManyToOne
-	@JoinColumn(name = "category_id")
-	@NotNull(message = "Category cannot be null")
-	private Category category;
+	@Column(name = "is_one_answer")
+	private Boolean isOneAnswer;
 	@ManyToOne
 	@JoinColumn(name = "topic_id")
 	private Topic topic;

@@ -20,4 +20,7 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private Author author;
 }

@@ -61,19 +61,19 @@ create table users
 );
 
 alter table if exists answer
-    add constraint FK_answer_quiz foreign key (quiz_id) references quiz;
+    add constraint fk_answer_quiz foreign key (quiz_id) references quiz;
 
 alter table if exists quiz
-    add constraint FK_quiz_author foreign key (author_id) references author;
+    add constraint fk_quiz_author foreign key (author_id) references author;
 
 alter table if exists quiz
-    add constraint FK_quiz_category foreign key (category_id) references category;
+    add constraint fk_quiz_category foreign key (category_id) references category;
 
 alter table if exists quiz
-    add constraint FK_quiz_quiz_details foreign key (quiz_details_id) references quiz_details;
+    add constraint fk_quiz_quiz_details foreign key (quiz_details_id) references quiz_details;
 
 alter table if exists quiz
-    add constraint FK_quiz_topic foreign key (topic_id) references topic;
+    add constraint fk_quiz_topic foreign key (topic_id) references topic;
 
 alter table if exists users
-    add constraint FK_users_category foreign key (category_id) references category;
+    add constraint fk_users_category foreign key (category_id) references category;

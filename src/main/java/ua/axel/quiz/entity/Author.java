@@ -19,6 +19,10 @@ public class Author {
 	@Column(name = "title")
 	@NotNull(message = "Title cannot be null")
 	private String title;
-	@Column(name = "link")
-	private String link;
+	@Column(name = "url")
+	private String url;
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	@NotNull(message = "Category cannot be null")
+	private Category category;
 }

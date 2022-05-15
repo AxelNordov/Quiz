@@ -36,6 +36,6 @@ public class CategoryService {
 	}
 
 	public void setUserCategory(Long userId, String categoryTitle) {
-		userService.setUserCategory(userId, findByTitle(categoryTitle));
+		userService.setCategory(userId, findByTitle(categoryTitle));
 	}
 }
