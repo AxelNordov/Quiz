@@ -32,12 +32,12 @@ public class AuthorService {
 		return authorRepository.findAll();
 	}
 
-	public List<Author> findByCategory(Category category) {
-		return authorRepository.findAll();
+	public List<Author> findAllByCategory(Category category) {
+		return authorRepository.findAllByCategory(category);
 	}
 
-	public List<String> getAllAuthorsTitlesByCategory() {
-		return findAll().stream().map(Author::getTitle).collect(Collectors.toList());
+	public List<String> getAllAuthorsTitlesByCategory(Category category) {
+		return findAllByCategory(category).stream().map(Author::getTitle).sorted().collect(Collectors.toList());
 	}
 
 	public void setUserCategory(Long userId, String authorTitle) {

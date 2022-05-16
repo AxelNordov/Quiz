@@ -19,6 +19,8 @@ public class QuizService {
 	private static final String QUIZ_TYPE = "quiz";
 	@Autowired
 	private QuizRepository quizRepository;
+	@Autowired
+	private UserService userService;
 
 	public Quiz findById(Long id) {
 		return quizRepository.findById(id).orElseThrow();
@@ -31,7 +33,9 @@ public class QuizService {
 	public Optional<BotApiMethod<Message>> getSendPool(Update update) {
 		var message = update.getMessage();
 		var chatId = message.getChatId().toString();
-		var quiz = quizRepository.findRandomQuizWithRightAnswer();
+		long userId = message.getFrom().getId();
+		var quiz = quizRepository.findByAuthorRandomQuizWithRightAnswer(
+				userService.findById(userId).getAuthor().getId());
 		var sendPoll = getSendPollFromQuiz(chatId, quiz);
 		return Optional.of(sendPoll);
 	}

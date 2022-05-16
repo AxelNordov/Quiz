@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class KeyboardService {
 
-	public static final int MAX_BUTTONS_NUMBER_IN_ROW = 4;
+	public static final int MAX_BUTTONS_NUMBER_IN_ROW = 3;
 
 	public ReplyKeyboardMarkup getMainMenuKeyboard(String... buttonText) {
 		final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();

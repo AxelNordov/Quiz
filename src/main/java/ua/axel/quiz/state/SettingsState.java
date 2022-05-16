@@ -15,6 +15,10 @@ public class SettingsState implements State {
 	@Autowired
 	private UserStateService userStateService;
 	@Autowired
+	private UserService userService;
+	@Autowired
+	private AuthorService authorService;
+	@Autowired
 	private CategoryService categoryService;
 	@Autowired
 	private SendMessageService sendMessageService;
@@ -42,18 +46,27 @@ public class SettingsState implements State {
 			var message = update.getMessage();
 			long userId = message.getFrom().getId();
 			var text = message.getText();
+			var chatId = message.getChatId().toString();
 			if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
 				userStateService.setUserStateName(userId, States.MAIN_STATE);
 				return facade.getState(States.MAIN_STATE).start(update);
 			} else if (text.equals(localeMessageService.getMessage("menu.category-button.name"))) {
-				var chatId = message.getChatId().toString();
-				var sendMessage = sendMessageService.getSendMessage(chatId, localeMessageService.getMessage("message.choose-the-category"));
-				sendMessage.enableMarkdown(true);
-				sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(categoryService.getAllCategoriesTitles().toArray(String[]::new)));
+				var sendMessage = sendMessageService.getSendMessage(
+						chatId, localeMessageService.getMessage("message.choose-the-category"));
+				sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
+						categoryService.getAllCategoriesTitles().toArray(String[]::new)));
 				return Optional.of(sendMessage);
 			} else if (categoryService.getAllCategoriesTitles().contains(text)) {
-				categoryService.setUserCategory(userId, text);
-				userStateService.setUserStateName(userId, States.SETTINGS_STATE);
+				userService.setCategory(userId, categoryService.findByTitle(text));
+				var sendMessage = sendMessageService.getSendMessage(
+						chatId, text + ": choose subcategory");
+				sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
+						authorService.getAllAuthorsTitlesByCategory(
+								categoryService.findByTitle(text)).toArray(String[]::new)));
+				return Optional.of(sendMessage);
+			} else if (authorService.getAllAuthorsTitlesByCategory(
+					userService.findById(userId).getCategory()).contains(text)) {
+				userService.setAuthor(userId, authorService.findByTitle(text));
 				return start(update);
 			}
 		}

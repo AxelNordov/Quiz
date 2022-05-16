@@ -23,8 +23,8 @@ public class CategoryService {
 		categoryRepository.save(quiz);
 	}
 
-	public Category findByTitle(String categoryTitle) {
-		return categoryRepository.findByTitle(categoryTitle).orElseThrow();
+	public Category findByTitle(String title) {
+		return categoryRepository.findByTitle(title).orElseThrow();
 	}
 
 	public List<Category> findAll() {

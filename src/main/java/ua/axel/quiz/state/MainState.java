@@ -31,7 +31,6 @@ public class MainState implements State {
 		var sendMessage = sendMessageService.getSendMessage(chatId,
 				String.format(localeMessageService.getMessage(
 						"message.you-are-in", localeMessageService.getMessage("menu.main-button.name"))));
-		sendMessage.enableMarkdown(true);
 		sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
 				localeMessageService.getMessage("menu.settings-button.name"),
 				localeMessageService.getMessage("menu.game-button.name")));

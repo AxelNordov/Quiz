@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ua.axel.quiz.entity.Author;
 import ua.axel.quiz.entity.Category;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +13,8 @@ import java.util.Optional;
 public interface AuthorRepository extends CrudRepository<Author, Long> {
 	Optional<Author> findByTitle(String title);
 
-	@Override
+	@Nonnull
 	List<Author> findAll();
 
-	Iterable<Author> findAllByCategory(Category category);
+	List<Author> findAllByCategory(Category category);
 }
