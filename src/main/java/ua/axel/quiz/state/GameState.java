@@ -6,10 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.Facade;
-import ua.axel.quiz.service.KeyboardService;
-import ua.axel.quiz.service.LocaleMessageService;
-import ua.axel.quiz.service.SendMessageService;
-import ua.axel.quiz.service.UserStateService;
+import ua.axel.quiz.service.*;
 
 import java.util.Optional;
 
@@ -23,6 +20,8 @@ public class GameState implements State {
 	private KeyboardService keyboardService;
 	@Autowired
 	private LocaleMessageService localeMessageService;
+	@Autowired
+	private QuizService quizService;
 
 	@Override
 	public Optional<BotApiMethod<Message>> start(Update update) {
@@ -45,8 +44,7 @@ public class GameState implements State {
 			userStateService.setUserStateName(userId, States.MAIN_STATE);
 			return facade.getState(States.MAIN_STATE).start(update);
 		} else if (message.hasText() && message.getText().equals(localeMessageService.getMessage("menu.next-button.name"))) {
-			var chatId = message.getChatId().toString();
-			return Optional.of(sendMessageService.getSendMessage(chatId, "Next quiz..."));
+			return quizService.getSendPool(update);
 		}
 		return Optional.empty();
 	}
