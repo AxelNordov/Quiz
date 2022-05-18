@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,13 +14,13 @@ public class KeyboardService {
 
 	public static final int MAX_BUTTONS_NUMBER_IN_ROW = 3;
 
-	public ReplyKeyboardMarkup getMainMenuKeyboard(String... buttonText) {
+	public ReplyKeyboardMarkup getMainMenuKeyboard(List<String> buttonText) {
 		final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 		replyKeyboardMarkup.setSelective(true);
 		replyKeyboardMarkup.setResizeKeyboard(true);
 		replyKeyboardMarkup.setOneTimeKeyboard(false);
 		List<KeyboardRow> keyboard = new ArrayList<>();
-		List<KeyboardButton> buttons = Arrays.stream(buttonText)
+		List<KeyboardButton> buttons = buttonText.stream()
 				.map(KeyboardButton::new)
 				.collect(Collectors.toList());
 		// Distribute the number of buttons relatively evenly.
@@ -32,7 +31,7 @@ public class KeyboardService {
 				maxButtonsNumberInRow--;
 			}
 			keyboard.add(new KeyboardRow(
-					buttons.subList(i, Math.min(i + maxButtonsNumberInRow, buttonText.length))));
+					buttons.subList(i, Math.min(i + maxButtonsNumberInRow, buttonText.size()))));
 		}
 		replyKeyboardMarkup.setKeyboard(keyboard);
 		return replyKeyboardMarkup;

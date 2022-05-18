@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import ua.axel.quiz.entity.Answer;
 import ua.axel.quiz.entity.Quiz;
 import ua.axel.quiz.repository.QuizRepository;
@@ -30,8 +29,7 @@ public class QuizService {
 		quizRepository.save(quiz);
 	}
 
-	public Optional<BotApiMethod<Message>> getSendPool(Update update) {
-		var message = update.getMessage();
+	public Optional<BotApiMethod<Message>> getSendPool(Message message) {
 		var chatId = message.getChatId().toString();
 		long userId = message.getFrom().getId();
 		var quiz = quizRepository.findByAuthorRandomQuizWithRightAnswer(
@@ -48,6 +46,7 @@ public class QuizService {
 		return SendPoll.builder()
 				.chatId(chatId)
 				.options(options)
+				.isAnonymous(true)
 				.question(quiz.getQuestion())
 				.type(QUIZ_TYPE)
 				.correctOptionId(getCorrectOptionId(quiz.getRightAnswer()))

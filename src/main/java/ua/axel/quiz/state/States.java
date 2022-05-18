@@ -3,26 +3,24 @@ package ua.axel.quiz.state;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 @Component
 public class States {
-	public static final String MAIN_STATE = "main";
-	public static final String SETTINGS_STATE = "settings";
-	public static final String GAME_STATE = "game";
-	private final Map<String, State> stateMap = new HashMap<>();
+	private static final Map<StateName, State> stateMap = new EnumMap<>(StateName.class);
 
 	@Autowired
-	public States(MainState mainState,
-	              GameState gameState,
-	              SettingsState settingsState) {
-		stateMap.put(MAIN_STATE, mainState);
-		stateMap.put(GAME_STATE, gameState);
-		stateMap.put(SETTINGS_STATE, settingsState);
+	States(MainState mainState,
+	       GameState gameState,
+	       SettingsState settingsState) {
+		stateMap.put(StateName.MAIN_STATE, mainState);
+		stateMap.put(StateName.GAME_STATE, gameState);
+		stateMap.put(StateName.SETTINGS_STATE, settingsState);
 	}
 
-	public State getState(String state) {
-		return stateMap.get(state);
+	public static State getState(StateName stateName) {
+		return stateMap.get(stateName);
 	}
+
 }
