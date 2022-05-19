@@ -12,36 +12,22 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private AuthorRepository authorRepository;
 
-	public Author findById(Long id) {
-		return authorRepository.findById(id).orElseThrow();
-	}
-
-	public void save(Author quiz) {
-		authorRepository.save(quiz);
-	}
-
 	public Author findByTitle(String authorTitle) {
-		return authorRepository.findByTitle(authorTitle).orElseThrow();
+		return authorRepository.findByTitle(authorTitle)
+				.orElseThrow();
 	}
 
-	public List<Author> findAll() {
-		return authorRepository.findAll();
-	}
-
-	public List<Author> findAllByCategory(Category category) {
+	private List<Author> findAllByCategory(Category category) {
 		return authorRepository.findAllByCategory(category);
 	}
 
-	public List<String> getAllAuthorsTitlesByCategory(Category category) {
-		return findAllByCategory(category).stream().map(Author::getTitle).sorted().collect(Collectors.toList());
-	}
-
-	public void setUserCategory(Long userId, String authorTitle) {
-		userService.setAuthor(userId, findByTitle(authorTitle));
+	public List<String> getAllTitlesByCategory(Category category) {
+		return findAllByCategory(category).stream()
+				.map(Author::getTitle)
+				.sorted()
+				.collect(Collectors.toList());
 	}
 
 }

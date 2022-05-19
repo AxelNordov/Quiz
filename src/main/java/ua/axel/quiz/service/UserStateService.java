@@ -17,12 +17,20 @@ public class UserStateService {
 		return userStateRepository.findById(userId);
 	}
 
-	public void save(Long userId, StateName state) {
-		userStateRepository.save(UserState.builder().id(userId).state(state).build());
+	public boolean existsById(Long userId) {
+		return userStateRepository.existsById(userId);
 	}
 
-	public void setUserState(Long userId, StateName stateName) {
-		save(userId, stateName);
+	public UserState save(Long userId, StateName state) {
+		return userStateRepository.save(
+				UserState.builder()
+						.id(userId)
+						.state(state)
+						.build());
+	}
+
+	public UserState setUserState(Long userId, StateName stateName) {
+		return save(userId, stateName);
 	}
 
 	public void setDefaultUserState(Long userId) {

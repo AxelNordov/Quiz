@@ -25,10 +25,10 @@ public class UpdateContentMessage implements UpdateContent {
 	@Override
 	public Optional<BotApiMethod<Message>> handle() {
 		var userId = message.getFrom().getId();
-		if (userStateService.findById(userId).isEmpty()) {
+		if (!userStateService.existsById(userId)) {
 			userStateService.setDefaultUserState(userId);
 		}
-		var currUserState = getState(userStateService.findById(userId).get().getState());
+		var currUserState = getState(userStateService.findById(userId).orElseThrow().getState());
 		return currUserState.handle(message);
 	}
 }

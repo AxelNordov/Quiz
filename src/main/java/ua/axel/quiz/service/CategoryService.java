@@ -11,31 +11,21 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService {
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private CategoryRepository categoryRepository;
 
-	public Category findById(Long id) {
-		return categoryRepository.findById(id).orElseThrow();
-	}
-
-	public void save(Category quiz) {
-		categoryRepository.save(quiz);
-	}
-
 	public Category findByTitle(String title) {
-		return categoryRepository.findByTitle(title).orElseThrow();
+		return categoryRepository.findByTitle(title)
+				.orElseThrow();
 	}
 
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
 
-	public List<String> getAllCategoriesTitles() {
-		return findAll().stream().map(Category::getTitle).collect(Collectors.toList());
+	public List<String> getAllTitles() {
+		return findAll().stream()
+				.map(Category::getTitle)
+				.collect(Collectors.toList());
 	}
 
-	public void setUserCategory(Long userId, String categoryTitle) {
-		userService.setCategory(userId, findByTitle(categoryTitle));
-	}
 }

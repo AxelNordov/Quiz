@@ -7,13 +7,6 @@ import ua.axel.quiz.entity.Quiz;
 
 @Repository
 public interface QuizRepository extends CrudRepository<Quiz, Long> {
-	@Query(value = "" +
-			"SELECT * " +
-			"FROM quiz " +
-			"WHERE right_answer > 0 " +
-			"ORDER BY random() " +
-			"LIMIT 1;", nativeQuery = true)
-	Quiz findRandomQuizWithRightAnswer();
 
 	@Query(value = "" +
 			"SELECT * " +

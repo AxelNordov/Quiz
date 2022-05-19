@@ -12,9 +12,14 @@ import java.util.Optional;
 public class UserStateRepositoryCache implements UserStateRepository {
 	private final Map<Long, StateName> userStateMap = new HashMap<>();
 
-	public Optional<UserState> findById(Long id) {
-		return Optional.ofNullable(userStateMap.get(id))
-				.map(state -> UserState.builder().id(id).state(state).build());
+	public Optional<UserState> findById(Long userId) {
+		return Optional.ofNullable(userStateMap.get(userId))
+				.map(state -> UserState.builder().id(userId).state(state).build());
+	}
+
+	@Override
+	public boolean existsById(Long userId) {
+		return userStateMap.containsKey(userId);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
-package ua.axel.quiz.service;
+package ua.axel.quiz.util;
 
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -9,12 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class KeyboardService {
+public class KeyboardUtil {
 
 	public static final int MAX_BUTTONS_NUMBER_IN_ROW = 3;
 
-	public ReplyKeyboardMarkup getMainMenuKeyboard(List<String> buttonText) {
+	private KeyboardUtil() {
+		throw new IllegalStateException("Utility class");
+	}
+
+	public static ReplyKeyboardMarkup getMainMenuKeyboard(List<String> buttonText) {
 		final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 		replyKeyboardMarkup.setSelective(true);
 		replyKeyboardMarkup.setResizeKeyboard(true);

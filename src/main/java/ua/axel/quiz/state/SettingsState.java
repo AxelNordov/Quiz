@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ua.axel.quiz.service.*;
+import ua.axel.quiz.util.SendMessageUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,50 +21,41 @@ public class SettingsState implements State {
 	@Autowired
 	private CategoryService categoryService;
 	@Autowired
-	private SendMessageService sendMessageService;
-	@Autowired
-	private KeyboardService keyboardService;
-	@Autowired
 	private LocaleMessageService localeMessageService;
 
 	@Override
-	public Optional<BotApiMethod<Message>> start(Message message) {
-		var chatId = message.getChatId().toString();
-		var sendMessage = sendMessageService.getSendMessage(chatId,
-				String.format(localeMessageService.getMessage(
-						"message.you-are-in", localeMessageService.getMessage("menu.settings-button.name"))));
-		sendMessage.enableMarkdown(true);
-		sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(List.of(
-				localeMessageService.getMessage("menu.main-button.name"),
-				localeMessageService.getMessage("menu.category-button.name"))));
+	public Optional<BotApiMethod<Message>> start(String chatId) {
+		var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+				localeMessageService.getMessage(
+						"message.you-are-in", localeMessageService.getMessage("menu.settings-button.name")),
+				List.of(localeMessageService.getMessage("menu.main-button.name"),
+						localeMessageService.getMessage("menu.category-button.name")));
 		return Optional.of(sendMessage);
 	}
 
 	@Override
 	public Optional<BotApiMethod<Message>> handle(Message message) {
-		long userId = message.getFrom().getId();
+		var userId = message.getFrom().getId();
 		var text = message.getText();
 		var chatId = message.getChatId().toString();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			userStateService.setUserState(userId, StateName.MAIN_STATE);
-			return States.getState(StateName.MAIN_STATE).start(message);
+			var userState = userStateService.setUserState(userId, StateName.MAIN_STATE);
+			return States.getState(userState.getState()).start(chatId);
 		} else if (text.equals(localeMessageService.getMessage("menu.category-button.name"))) {
-			var sendMessage = sendMessageService.getSendMessage(
-					chatId, localeMessageService.getMessage("message.choose-the-category"));
-			sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
-					categoryService.getAllCategoriesTitles()));
+			var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+					localeMessageService.getMessage("message.choose-the-category"),
+					categoryService.getAllTitles());
 			return Optional.of(sendMessage);
-		} else if (categoryService.getAllCategoriesTitles().contains(text)) {
+		} else if (categoryService.getAllTitles().contains(text)) {
 			userService.setCategory(userId, categoryService.findByTitle(text));
-			var sendMessage = sendMessageService.getSendMessage(
-					chatId, text + ": choose subcategory");
-			sendMessage.setReplyMarkup(keyboardService.getMainMenuKeyboard(
-					authorService.getAllAuthorsTitlesByCategory(categoryService.findByTitle(text))));
+			var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+					text + ": choose subcategory",
+					authorService.getAllTitlesByCategory(categoryService.findByTitle(text)));
 			return Optional.of(sendMessage);
-		} else if (authorService.getAllAuthorsTitlesByCategory(
+		} else if (authorService.getAllTitlesByCategory(
 				userService.findById(userId).getCategory()).contains(text)) {
 			userService.setAuthor(userId, authorService.findByTitle(text));
-			return start(message);
+			return start(chatId);
 		}
 		return Optional.empty();
 	}
