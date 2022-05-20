@@ -15,5 +15,4 @@ public interface QuizRepository extends CrudRepository<Quiz, Long> {
 			"ORDER BY random() " +
 			"LIMIT 1;", nativeQuery = true)
 	Quiz findByAuthorRandomQuizWithRightAnswer(long authorId);
-
 }

@@ -6,10 +6,10 @@ import org.telegram.telegrambots.meta.api.interfaces.BotApiObject;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ua.axel.quiz.service.UserStateService;
+import ua.axel.quiz.state.State;
+import ua.axel.quiz.state.States;
 
 import java.util.Optional;
-
-import static ua.axel.quiz.state.States.getState;
 
 @Component
 public class UpdateContentMessage implements UpdateContent {
@@ -25,10 +25,16 @@ public class UpdateContentMessage implements UpdateContent {
 	@Override
 	public Optional<BotApiMethod<Message>> handle() {
 		var userId = message.getFrom().getId();
+		return getUserState(userId).handle(message);
+	}
+
+	private State getUserState(Long userId) {
 		if (!userStateService.existsById(userId)) {
 			userStateService.setDefaultUserState(userId);
 		}
-		var currUserState = getState(userStateService.findById(userId).orElseThrow().getState());
-		return currUserState.handle(message);
+		return States.getState(
+				userStateService.findById(userId)
+						.orElseThrow()
+						.getState());
 	}
 }
