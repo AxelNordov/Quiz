@@ -29,5 +29,4 @@ public class AuthorService {
 				.sorted()
 				.collect(Collectors.toList());
 	}
-
 }

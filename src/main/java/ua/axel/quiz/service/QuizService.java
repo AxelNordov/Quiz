@@ -24,5 +24,4 @@ public class QuizService {
 		var sendPoll = SendPollUtil.getSendPollFromQuiz(chatId, quiz);
 		return Optional.of(sendPoll);
 	}
-
 }

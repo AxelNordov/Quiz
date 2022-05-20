@@ -31,6 +31,7 @@ public class Quiz {
 	private Topic topic;
 	@ManyToOne
 	@JoinColumn(name = "author_id")
+	@NotNull(message = "Author cannot be null")
 	private Author author;
 	@OneToOne
 	@JoinColumn(name = "quiz_details_id")

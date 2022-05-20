@@ -27,5 +27,4 @@ public class CategoryService {
 				.map(Category::getTitle)
 				.collect(Collectors.toList());
 	}
-
 }

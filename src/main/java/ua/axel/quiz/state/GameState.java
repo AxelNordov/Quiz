@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class GameState implements State {
-	@Autowired
-	private UserStateService userStateService;
-	@Autowired
-	private LocaleMessageService localeMessageService;
+public class GameState extends State {
 	@Autowired
 	private QuizService quizService;
 
@@ -33,12 +29,11 @@ public class GameState implements State {
 
 	@Override
 	public Optional<BotApiMethod<Message>> handle(Message message) {
+		var userId = message.getFrom().getId();
+		var chatId = message.getChatId().toString();
 		var text = message.getText();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			var userId = message.getFrom().getId();
-			var chatId = message.getChatId().toString();
-			var state = userStateService.setUserState(userId, StateName.MAIN_STATE).getState();
-			return States.getState(state).start(chatId);
+			return changeState(userId, chatId, StateName.MAIN_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.next-button.name"))) {
 			return quizService.getSendPool(message);
 		}
