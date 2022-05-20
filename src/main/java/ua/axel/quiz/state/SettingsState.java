@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ua.axel.quiz.service.AuthorService;
 import ua.axel.quiz.service.CategoryService;
-import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.UserService;
 import ua.axel.quiz.util.SendMessageUtil;
 
@@ -51,9 +50,10 @@ public class SettingsState extends State {
 			var sendMessage = SendMessageUtil
 					.getSendMessageWithMainMenuKeyboard(chatId,
 							text + ": choose subcategory",
-							authorService.getAllTitlesByCategory(categoryService.findByTitle(text)));
+							authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(categoryService.findByTitle(text)));
 			return Optional.of(sendMessage);
-		} else if (authorService.getAllTitlesByCategory(userService.findById(userId).getCategory()).contains(text)) {
+		} else if (authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(
+				userService.findById(userId).getCategory()).contains(text)) {
 			userService.setAuthor(userId, authorService.findByTitle(text));
 			return start(chatId);
 		}
