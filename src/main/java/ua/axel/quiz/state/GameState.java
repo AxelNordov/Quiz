@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import ua.axel.quiz.service.LocaleMessageService;
 import ua.axel.quiz.service.QuizService;
-import ua.axel.quiz.service.UserStateService;
 import ua.axel.quiz.util.SendMessageUtil;
 
 import java.util.List;

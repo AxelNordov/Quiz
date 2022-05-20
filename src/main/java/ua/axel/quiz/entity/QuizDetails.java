@@ -1,20 +1,26 @@
 package ua.axel.quiz.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
-@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Entity
 @Table(name = "quiz_details")
 public class QuizDetails {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "quiz_id")
 	private Long id;
+	@OneToOne
+	@MapsId
+	@JoinColumn(name = "quiz_id")
+	private Quiz quiz;
 	@Column(name = "origin_number")
 	private Integer originNumber;
 	@Column(name = "description", columnDefinition = "text")

@@ -1,21 +1,24 @@
 package ua.axel.quiz.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Entity
 @Table(name = "quiz")
 public class Quiz {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 	@Column(name = "question")
 	@NotNull(message = "Question cannot be null")
@@ -33,7 +36,7 @@ public class Quiz {
 	@JoinColumn(name = "author_id")
 	@NotNull(message = "Author cannot be null")
 	private Author author;
-	@OneToOne
-	@JoinColumn(name = "quiz_details_id")
+	@OneToOne(mappedBy = "quiz", cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	private QuizDetails quizDetails;
 }
