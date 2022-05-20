@@ -50,9 +50,9 @@ public class SettingsState implements State {
 			userService.setCategory(userId, categoryService.findByTitle(text));
 			var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
 					text + ": choose subcategory",
-					authorService.getAllTitlesByCategory(categoryService.findByTitle(text)));
+					authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(categoryService.findByTitle(text)));
 			return Optional.of(sendMessage);
-		} else if (authorService.getAllTitlesByCategory(
+		} else if (authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(
 				userService.findById(userId).getCategory()).contains(text)) {
 			userService.setAuthor(userId, authorService.findByTitle(text));
 			return start(chatId);

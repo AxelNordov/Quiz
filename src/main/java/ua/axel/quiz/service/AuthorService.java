@@ -19,12 +19,8 @@ public class AuthorService {
 				.orElseThrow();
 	}
 
-	private List<Author> findAllByCategory(Category category) {
-		return authorRepository.findAllByCategory(category);
-	}
-
-	public List<String> getAllTitlesByCategory(Category category) {
-		return findAllByCategory(category).stream()
+	public List<String> getAllHasQuizzesWithRightAnswerTitlesByCategory(Category category) {
+		return authorRepository.findAllHasQuizzesWithRightAnswerByCategory(category).stream()
 				.map(Author::getTitle)
 				.sorted()
 				.collect(Collectors.toList());

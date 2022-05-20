@@ -1,5 +1,6 @@
 package ua.axel.quiz.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ua.axel.quiz.entity.Author;
@@ -11,10 +12,12 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Long> {
+
 	Optional<Author> findByTitle(String title);
 
 	@Nonnull
 	List<Author> findAll();
 
-	List<Author> findAllByCategory(Category category);
+	@Query(value = "select distinct a from Author as a join fetch Quiz as q on a = q.author where q.rightAnswer > 0")
+	List<Author> findAllHasQuizzesWithRightAnswerByCategory(Category category);
 }
