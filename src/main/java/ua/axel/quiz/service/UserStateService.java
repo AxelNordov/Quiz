@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.axel.quiz.entity.UserState;
 import ua.axel.quiz.repository.UserStateRepository;
-import ua.axel.quiz.state.StateName;
+import ua.axel.quiz.state.States;
 
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class UserStateService {
 		return userStateRepository.existsById(userId);
 	}
 
-	public UserState save(Long userId, StateName state) {
+	public UserState save(Long userId, States.Name state) {
 		return userStateRepository.save(
 				UserState.builder()
 						.id(userId)
@@ -29,11 +29,11 @@ public class UserStateService {
 						.build());
 	}
 
-	public UserState setUserState(Long userId, StateName stateName) {
-		return save(userId, stateName);
+	public UserState setUserState(Long userId, States.Name name) {
+		return save(userId, name);
 	}
 
 	public void setDefaultUserState(Long userId) {
-		setUserState(userId, StateName.MAIN_STATE);
+		setUserState(userId, States.Name.MAIN_STATE);
 	}
 }

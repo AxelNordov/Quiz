@@ -18,8 +18,8 @@ public abstract class State {
 
 	public abstract Optional<BotApiMethod<Message>> handle(Message message);
 
-	protected Optional<BotApiMethod<Message>> changeState(Long userId, String chatId, StateName state) {
-		var userState = userStateService.setUserState(userId, state);
+	protected Optional<BotApiMethod<Message>> changeState(Long userId, String chatId, States.Name stateName) {
+		var userState = userStateService.setUserState(userId, stateName);
 		return States.getState(userState.getState()).start(chatId);
 	}
 }

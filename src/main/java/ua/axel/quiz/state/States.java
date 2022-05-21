@@ -8,19 +8,24 @@ import java.util.Map;
 
 @Component
 public class States {
-	private static final Map<StateName, State> stateMap = new EnumMap<>(StateName.class);
+	private static final Map<Name, State> stateMap = new EnumMap<>(Name.class);
 
 	@Autowired
 	States(MainState mainState,
 	       GameState gameState,
 	       SettingsState settingsState) {
-		stateMap.put(StateName.MAIN_STATE, mainState);
-		stateMap.put(StateName.GAME_STATE, gameState);
-		stateMap.put(StateName.SETTINGS_STATE, settingsState);
+		stateMap.put(Name.MAIN_STATE, mainState);
+		stateMap.put(Name.GAME_STATE, gameState);
+		stateMap.put(Name.SETTINGS_STATE, settingsState);
 	}
 
-	public static State getState(StateName stateName) {
-		return stateMap.get(stateName);
+	public static State getState(Name name) {
+		return stateMap.get(name);
 	}
 
+	public enum Name {
+		MAIN_STATE,
+		SETTINGS_STATE,
+		GAME_STATE
+	}
 }

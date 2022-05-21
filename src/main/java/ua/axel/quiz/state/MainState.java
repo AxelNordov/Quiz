@@ -27,9 +27,9 @@ public class MainState extends State {
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
 		if (text.equals(localeMessageService.getMessage("menu.settings-button.name"))) {
-			return changeState(userId, chatId, StateName.SETTINGS_STATE);
+			return changeState(userId, chatId, States.Name.SETTINGS_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
-			return changeState(userId, chatId, StateName.GAME_STATE);
+			return changeState(userId, chatId, States.Name.GAME_STATE);
 		} else {
 			return start(chatId);
 		}

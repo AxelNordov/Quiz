@@ -31,7 +31,7 @@ public class GameState extends State {
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			return changeState(userId, chatId, StateName.MAIN_STATE);
+			return changeState(userId, chatId, States.Name.MAIN_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.next-button.name"))) {
 			return quizService.getSendPool(message);
 		}

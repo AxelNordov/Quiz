@@ -38,7 +38,7 @@ public class SettingsState extends State {
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			return changeState(userId, chatId, StateName.MAIN_STATE);
+			return changeState(userId, chatId, States.Name.MAIN_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.category-button.name"))) {
 			var sendMessage = SendMessageUtil
 					.getSendMessageWithMainMenuKeyboard(chatId,
