@@ -7,14 +7,15 @@ import ua.axel.quiz.entity.Category;
 import ua.axel.quiz.entity.User;
 import ua.axel.quiz.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User findById(Long id) {
-		return userRepository.findById(id)
-				.orElseThrow();
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
 	}
 
 	public void setCategory(Long userId, Category category) {

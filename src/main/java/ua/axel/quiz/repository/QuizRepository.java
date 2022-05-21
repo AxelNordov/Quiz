@@ -15,4 +15,11 @@ public interface QuizRepository extends CrudRepository<Quiz, Long> {
 			"order by random()\n" +
 			"limit 1;", nativeQuery = true)
 	Quiz findByAuthorRandomQuizWithRightAnswer(long authorId);
+
+	@Query(value = "select *\n" +
+			"from quiz\n" +
+			"where right_answer > 0\n" +
+			"order by random()\n" +
+			"limit 1;", nativeQuery = true)
+	Quiz findRandomQuizWithRightAnswer();
 }

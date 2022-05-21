@@ -53,7 +53,7 @@ public class SettingsState extends State {
 							authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(categoryService.findByTitle(text)));
 			return Optional.of(sendMessage);
 		} else if (authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(
-				userService.findById(userId).getCategory()).contains(text)) {
+				userService.findById(userId).orElseThrow().getCategory()).contains(text)) {
 			userService.setAuthor(userId, authorService.findByTitle(text));
 			return start(chatId);
 		}
