@@ -23,7 +23,7 @@ public class UpdateContentPoll implements UpdateContent {
 	}
 
 	@Override
-	public Optional<BotApiMethod<Message>> handle() {
+	public List<BotApiMethod<Message>> handle() {
 		List<PollOption> options = poll.getOptions();
 		int answerNumber = IntStream.range(0, options.size()).filter(i -> options.get(i).getVoterCount() == 1).findFirst().orElse(-1);
 		if (poll.getCorrectOptionId() == answerNumber) {
@@ -31,6 +31,6 @@ public class UpdateContentPoll implements UpdateContent {
 		} else {
 			log.info("Wrong!");
 		}
-		return Optional.empty();
+		return List.of();
 	}
 }

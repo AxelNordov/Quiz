@@ -9,7 +9,7 @@ import ua.axel.quiz.service.UserStateService;
 import ua.axel.quiz.state.State;
 import ua.axel.quiz.state.States;
 
-import java.util.Optional;
+import java.util.List;
 
 @Component
 public class UpdateContentMessage implements UpdateContent {
@@ -23,7 +23,7 @@ public class UpdateContentMessage implements UpdateContent {
 	}
 
 	@Override
-	public Optional<BotApiMethod<Message>> handle() {
+	public List<BotApiMethod<Message>> handle() {
 		var userId = message.getFrom().getId();
 		return getUserState(userId).handle(message);
 	}

@@ -13,6 +13,7 @@ import ua.axel.quiz.handler.UpdateContentPoll;
 import ua.axel.quiz.handler.UpdateContentPollAnswer;
 import ua.axel.quiz.service.UserStateService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -24,12 +25,12 @@ public class Facade {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public Optional<BotApiMethod<Message>> handle(Update update) {
+	public List<BotApiMethod<Message>> handle(Update update) {
 		if (isFirstRun) {
 			userStateService.updateCache();
 			isFirstRun = false;
 		}
-		return getUpdateContent(update).flatMap(UpdateContent::handle);
+		return getUpdateContent(update).orElseThrow().handle();
 	}
 
 	private Optional<UpdateContent> getUpdateContent(Update update) {

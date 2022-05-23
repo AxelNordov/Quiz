@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.polls.PollAnswer;
 
-import java.util.Optional;
+import java.util.List;
 
 @Component
 public class UpdateContentPollAnswer implements UpdateContent {
@@ -19,8 +19,8 @@ public class UpdateContentPollAnswer implements UpdateContent {
 	}
 
 	@Override
-	public Optional<BotApiMethod<Message>> handle() {
-		return Optional.of(
+	public List<BotApiMethod<Message>> handle() {
+		return List.of(
 				SendMessage.builder()
 						.chatId(pollAnswer.getUser().getId().toString())
 						.text("hi")

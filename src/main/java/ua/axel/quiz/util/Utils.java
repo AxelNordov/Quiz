@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Utils {
-	public static final Random rand;
+	private static final Random rand;
 
 	static {
 		try {
