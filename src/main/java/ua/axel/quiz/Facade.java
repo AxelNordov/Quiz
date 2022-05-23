@@ -11,16 +11,24 @@ import ua.axel.quiz.handler.UpdateContent;
 import ua.axel.quiz.handler.UpdateContentMessage;
 import ua.axel.quiz.handler.UpdateContentPoll;
 import ua.axel.quiz.handler.UpdateContentPollAnswer;
+import ua.axel.quiz.service.UserStateService;
 
 import java.util.Optional;
 
 @Component
 @Slf4j
 public class Facade {
+	private boolean isFirstRun = true;
+	@Autowired
+	private UserStateService userStateService;
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	public Optional<BotApiMethod<Message>> handle(Update update) {
+		if (isFirstRun) {
+			userStateService.updateCache();
+			isFirstRun = false;
+		}
 		return getUpdateContent(update).flatMap(UpdateContent::handle);
 	}
 

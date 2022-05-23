@@ -27,4 +27,9 @@ public class UserStateRepositoryCache implements UserStateRepository {
 		userStateMap.put(userState.getId(), userState.getState());
 		return userState;
 	}
+
+	@Override
+	public void saveAll(Map<Long, States.Name> map) {
+		userStateMap.putAll(map);
+	}
 }

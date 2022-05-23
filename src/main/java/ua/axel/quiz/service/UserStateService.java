@@ -2,14 +2,18 @@ package ua.axel.quiz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.axel.quiz.entity.User;
 import ua.axel.quiz.entity.UserState;
 import ua.axel.quiz.repository.UserStateRepository;
 import ua.axel.quiz.state.States;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserStateService {
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private UserStateRepository userStateRepository;
 
@@ -35,5 +39,11 @@ public class UserStateService {
 
 	public void setDefaultUserState(Long userId) {
 		setUserState(userId, States.Name.MAIN_STATE);
+	}
+
+	public void updateCache() {
+		userStateRepository.saveAll(
+				userService.findAll().stream()
+						.collect(Collectors.toMap(User::getId, User::getStateName)));
 	}
 }

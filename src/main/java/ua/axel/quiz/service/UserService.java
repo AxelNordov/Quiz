@@ -6,7 +6,9 @@ import ua.axel.quiz.entity.Author;
 import ua.axel.quiz.entity.Category;
 import ua.axel.quiz.entity.User;
 import ua.axel.quiz.repository.UserRepository;
+import ua.axel.quiz.state.States;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,16 +21,29 @@ public class UserService {
 	}
 
 	public void setCategory(Long userId, Category category) {
-		User user = userRepository.findById(userId)
-				.orElseGet(() -> User.builder().id(userId).build());
+		var user = findByIdOrNew(userId);
 		user.setCategory(category);
 		userRepository.save(user);
 	}
 
 	public void setAuthor(Long userId, Author author) {
-		User user = userRepository.findById(userId)
-				.orElseGet(() -> User.builder().id(userId).build());
+		var user = findByIdOrNew(userId);
 		user.setAuthor(author);
 		userRepository.save(user);
+	}
+
+	public void setStateName(Long userId, States.Name stateName) {
+		var user = findByIdOrNew(userId);
+		user.setStateName(stateName);
+		userRepository.save(user);
+	}
+
+	private User findByIdOrNew(Long userId) {
+		return userRepository.findById(userId)
+				.orElseGet(() -> User.builder().id(userId).build());
+	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 }

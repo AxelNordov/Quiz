@@ -30,11 +30,12 @@ public class GameState extends State {
 		var userId = message.getFrom().getId();
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
+		Optional<BotApiMethod<Message>> sendMessage = Optional.empty();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			return changeState(userId, chatId, States.Name.MAIN_STATE);
+			sendMessage = changeState(userId, chatId, States.Name.MAIN_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.next-button.name"))) {
-			return quizService.getSendPool(message);
+			sendMessage = quizService.getSendPool(message);
 		}
-		return Optional.empty();
+		return sendMessage;
 	}
 }

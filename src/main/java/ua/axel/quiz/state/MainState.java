@@ -26,12 +26,14 @@ public class MainState extends State {
 		var userId = message.getFrom().getId();
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
+		Optional<BotApiMethod<Message>> sendMessage;
 		if (text.equals(localeMessageService.getMessage("menu.settings-button.name"))) {
-			return changeState(userId, chatId, States.Name.SETTINGS_STATE);
+			sendMessage = changeState(userId, chatId, States.Name.SETTINGS_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
-			return changeState(userId, chatId, States.Name.GAME_STATE);
+			sendMessage = changeState(userId, chatId, States.Name.GAME_STATE);
 		} else {
-			return start(chatId);
+			sendMessage = start(chatId);
 		}
+		return sendMessage;
 	}
 }
