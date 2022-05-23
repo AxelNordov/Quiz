@@ -2,14 +2,13 @@ package ua.axel.quiz.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import ua.axel.quiz.entity.Author;
+import ua.axel.quiz.entity.Quiz;
 import ua.axel.quiz.entity.User;
 import ua.axel.quiz.repository.QuizRepository;
-import ua.axel.quiz.util.SendPollUtil;
+import ua.axel.quiz.util.Utils;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class QuizService {
@@ -18,15 +17,21 @@ public class QuizService {
 	@Autowired
 	private UserService userService;
 
-	public Optional<BotApiMethod<Message>> getSendPool(Message message) {
-		var chatId = message.getChatId().toString();
-		long userId = message.getFrom().getId();
-		var quiz = userService.findById(userId)
+	public Quiz getQuiz(long userId) {
+		return userService.findById(userId)
 				.map(User::getAuthor)
-				.map(Author::getId)
-				.map(quizRepository::findByAuthorRandomQuizWithRightAnswer)
-				.orElseGet(quizRepository::findRandomQuizWithRightAnswer);
-		var sendPoll = SendPollUtil.getSendPollFromQuiz(chatId, quiz);
-		return Optional.of(sendPoll);
+				.flatMap(author -> quizRepository.findById(
+						Utils.getRandom(getIdsWithRightAnswerByAuthors(List.of(author)))))
+				.or(() -> quizRepository.findById(
+						Utils.getRandom(getIdsWithRightAnswer())))
+				.orElseThrow();
+	}
+
+	private List<Long> getIdsWithRightAnswer() {
+		return quizRepository.findIdsByRightAnswerIsNotNull();
+	}
+
+	private List<Long> getIdsWithRightAnswerByAuthors(List<Author> authors) {
+		return quizRepository.findIdsByRightAnswerIsNotNullAndAuthorIn(authors);
 	}
 }

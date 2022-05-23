@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ua.axel.quiz.service.QuizService;
 import ua.axel.quiz.util.SendMessageUtil;
+import ua.axel.quiz.util.SendPollUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,9 @@ public class GameState extends State {
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
 			sendMessage = changeState(userId, chatId, States.Name.MAIN_STATE);
 		} else if (text.equals(localeMessageService.getMessage("menu.next-button.name"))) {
-			sendMessage = quizService.getSendPool(message);
+			var quiz = quizService.getQuiz(userId);
+			var sendPoll = SendPollUtil.getSendPollFromQuiz(chatId, quiz);
+			sendMessage = Optional.of(sendPoll);
 		}
 		return sendMessage;
 	}
