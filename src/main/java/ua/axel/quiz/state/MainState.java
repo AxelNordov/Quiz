@@ -12,7 +12,8 @@ import java.util.List;
 public class MainState extends State {
 
 	@Override
-	public List<BotApiMethod<Message>> start(String chatId) {
+	public List<BotApiMethod<Message>> start(Message message) {
+		var chatId = message.getChatId().toString();
 		var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
 				localeMessageService.getMessage(
 						"message.you-are-in", localeMessageService.getMessage("menu.main-button.name")),
@@ -23,17 +24,15 @@ public class MainState extends State {
 
 	@Override
 	public List<BotApiMethod<Message>> handle(Message message) {
-		var userId = message.getFrom().getId();
-		var chatId = message.getChatId().toString();
+		var botApiMethods = new ArrayList<BotApiMethod<Message>>();
 		var text = message.getText();
-		var sendMessages = new ArrayList<BotApiMethod<Message>>();
 		if (text.equals(localeMessageService.getMessage("menu.settings-button.name"))) {
-			sendMessages.addAll(changeState(userId, chatId, States.Name.SETTINGS_STATE));
+			botApiMethods.addAll(changeState(message, States.Name.SETTINGS_STATE));
 		} else if (text.equals(localeMessageService.getMessage("menu.game-button.name"))) {
-			sendMessages.addAll(changeState(userId, chatId, States.Name.GAME_STATE));
+			botApiMethods.addAll(changeState(message, States.Name.GAME_STATE));
 		} else {
-			sendMessages.addAll(start(chatId));
+			botApiMethods.addAll(start(message));
 		}
-		return sendMessages;
+		return botApiMethods;
 	}
 }

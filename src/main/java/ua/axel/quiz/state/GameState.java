@@ -17,28 +17,31 @@ public class GameState extends State {
 	private QuizService quizService;
 
 	@Override
-	public List<BotApiMethod<Message>> start(String chatId) {
-		var sendMessage = SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
-				localeMessageService.getMessage(
-						"message.you-are-in", localeMessageService.getMessage("menu.game-button.name")),
+	public List<BotApiMethod<Message>> start(Message message) {
+		var chatId = message.getChatId().toString();
+		var botApiMethods = new ArrayList<BotApiMethod<Message>>();
+		botApiMethods.add(SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+				localeMessageService.getMessage("message.game.greetings"),
 				List.of(localeMessageService.getMessage("menu.main-button.name"),
-						localeMessageService.getMessage("menu.next-button.name")));
-		return List.of(sendMessage);
+						localeMessageService.getMessage("menu.next-button.name"))));
+		var userId = message.getFrom().getId();
+		botApiMethods.add(SendPollUtil.getSendPollFromQuiz(chatId, quizService.getQuiz(userId)));
+		return botApiMethods;
 	}
 
 	@Override
 	public List<BotApiMethod<Message>> handle(Message message) {
+		var botApiMethods = new ArrayList<BotApiMethod<Message>>();
 		var userId = message.getFrom().getId();
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
-		var sendMessages = new ArrayList<BotApiMethod<Message>>();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			sendMessages.addAll(changeState(userId, chatId, States.Name.MAIN_STATE));
+			botApiMethods.addAll(changeState(message, States.Name.MAIN_STATE));
 		} else if (text.equals(localeMessageService.getMessage("menu.next-button.name"))) {
 			var quiz = quizService.getQuiz(userId);
 			var sendPoll = SendPollUtil.getSendPollFromQuiz(chatId, quiz);
-			sendMessages.add(sendPoll);
+			botApiMethods.add(sendPoll);
 		}
-		return sendMessages;
+		return botApiMethods;
 	}
 }

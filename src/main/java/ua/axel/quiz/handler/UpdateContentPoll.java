@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.polls.Poll;
 import org.telegram.telegrambots.meta.api.objects.polls.PollOption;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Slf4j

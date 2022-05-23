@@ -22,38 +22,39 @@ public class SettingsState extends State {
 	private CategoryService categoryService;
 
 	@Override
-	public List<BotApiMethod<Message>> start(String chatId) {
+	public List<BotApiMethod<Message>> start(Message message) {
+		var chatId = message.getChatId().toString();
 		var sendMessage = SendMessageUtil
 				.getSendMessageWithMainMenuKeyboard(chatId,
 						localeMessageService.getMessage(
 								"message.you-are-in", localeMessageService.getMessage("menu.settings-button.name")),
-						List.of(localeMessageService.getMessage("menu.main-button.name"),
-								localeMessageService.getMessage("menu.category-button.name")));
+						List.of(localeMessageService.getMessage("menu.category-button.name"),
+								localeMessageService.getMessage("menu.main-button.name")));
 		return List.of(sendMessage);
 	}
 
 	@Override
 	public List<BotApiMethod<Message>> handle(Message message) {
+		var botApiMethods = new ArrayList<BotApiMethod<Message>>();
 		var userId = message.getFrom().getId();
 		var chatId = message.getChatId().toString();
 		var text = message.getText();
-		var sendMessages = new ArrayList<BotApiMethod<Message>>();
 		if (text.equals(localeMessageService.getMessage("menu.main-button.name"))) {
-			sendMessages.addAll(changeState(userId, chatId, States.Name.MAIN_STATE));
+			botApiMethods.addAll(changeState(message, States.Name.MAIN_STATE));
 		} else if (text.equals(localeMessageService.getMessage("menu.category-button.name"))) {
-			sendMessages.add(SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
-					localeMessageService.getMessage("message.choose-the-category"),
+			botApiMethods.add(SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+					localeMessageService.getMessage("message.category.choose"),
 					categoryService.getAllTitles()));
 		} else if (categoryService.getAllTitles().contains(text)) {
 			userService.setCategory(userId, categoryService.findByTitle(text));
-			sendMessages.add(SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
+			botApiMethods.add(SendMessageUtil.getSendMessageWithMainMenuKeyboard(chatId,
 					text + ": choose subcategory",
 					authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(categoryService.findByTitle(text))));
 		} else if (authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(
 				userService.findById(userId).orElseThrow().getCategory()).contains(text)) {
 			userService.setAuthor(userId, authorService.findByTitle(text));
-			sendMessages.addAll(changeState(userId, chatId, States.Name.GAME_STATE));
+			botApiMethods.addAll(changeState(message, States.Name.GAME_STATE));
 		}
-		return sendMessages;
+		return botApiMethods;
 	}
 }

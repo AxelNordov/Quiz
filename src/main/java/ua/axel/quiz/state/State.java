@@ -17,13 +17,14 @@ public abstract class State {
 	@Autowired
 	private UserService userService;
 
-	public abstract List<BotApiMethod<Message>> start(String chatId);
+	public abstract List<BotApiMethod<Message>> start(Message message);
 
 	public abstract List<BotApiMethod<Message>> handle(Message message);
 
-	protected List<BotApiMethod<Message>> changeState(Long userId, String chatId, States.Name stateName) {
+	protected List<BotApiMethod<Message>> changeState(Message message, States.Name stateName) {
+		var userId = message.getFrom().getId();
 		userService.setStateName(userId, stateName);
 		var userState = userStateService.setUserState(userId, stateName);
-		return States.getState(userState.getState()).start(chatId);
+		return States.getState(userState.getState()).start(message);
 	}
 }
