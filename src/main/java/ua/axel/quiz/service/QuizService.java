@@ -8,6 +8,7 @@ import ua.axel.quiz.entity.User;
 import ua.axel.quiz.repository.QuizRepository;
 import ua.axel.quiz.util.Utils;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -19,9 +20,10 @@ public class QuizService {
 
 	public Quiz getQuiz(long userId) {
 		return userService.findById(userId)
-				.map(User::getAuthor)
-				.flatMap(author -> quizRepository.findById(
-						Utils.getRandom(getIdsWithRightAnswerByAuthors(List.of(author)))))
+				.map(User::getAuthors)
+				.filter(authors -> !authors.isEmpty())
+				.flatMap(authors -> quizRepository.findById(
+						Utils.getRandom(getIdsWithRightAnswerByAuthors(authors))))
 				.or(() -> quizRepository.findById(
 						Utils.getRandom(getIdsWithRightAnswer())))
 				.orElseThrow();
@@ -31,7 +33,7 @@ public class QuizService {
 		return quizRepository.findIdsByRightAnswerIsNotNull();
 	}
 
-	private List<Long> getIdsWithRightAnswerByAuthors(List<Author> authors) {
+	private List<Long> getIdsWithRightAnswerByAuthors(Collection<Author> authors) {
 		return quizRepository.findIdsByRightAnswerIsNotNullAndAuthorIn(authors);
 	}
 }

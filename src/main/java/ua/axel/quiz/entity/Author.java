@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -24,8 +26,23 @@ public class Author {
 	private String title;
 	@Column(name = "url")
 	private String url;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	@NotNull(message = "Category cannot be null")
 	private Category category;
+	@ManyToMany(mappedBy = "authors")
+	private Set<User> users;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Author author = (Author) o;
+		return id.equals(author.id) && Objects.equals(title, author.title) && Objects.equals(url, author.url) && category.equals(author.category);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, title, url, category);
+	}
 }

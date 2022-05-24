@@ -52,7 +52,7 @@ public class SettingsState extends State {
 					authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(categoryService.findByTitle(text))));
 		} else if (authorService.getAllHasQuizzesWithRightAnswerTitlesByCategory(
 				userService.findById(userId).orElseThrow().getCategory()).contains(text)) {
-			userService.setAuthor(userId, authorService.findByTitle(text));
+			userService.toggleAuthor(userId, authorService.findByTitle(text));
 			botApiMethods.addAll(changeState(message, States.Name.GAME_STATE));
 		}
 		return botApiMethods;

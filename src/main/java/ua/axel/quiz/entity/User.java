@@ -4,6 +4,7 @@ import lombok.*;
 import ua.axel.quiz.state.States;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -22,7 +23,10 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
-	@ManyToOne
-	@JoinColumn(name = "author_id")
-	private Author author;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "user_author",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "author_id"))
+	private Set<Author> authors;
 }

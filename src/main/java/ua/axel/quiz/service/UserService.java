@@ -26,9 +26,14 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void setAuthor(Long userId, Author author) {
+	public void toggleAuthor(Long userId, Author author) {
 		var user = findByIdOrNew(userId);
-		user.setAuthor(author);
+		var authors = user.getAuthors();
+		if (authors.contains(author)) {
+			authors.remove(author);
+		} else {
+			user.getAuthors().add(author);
+		}
 		userRepository.save(user);
 	}
 
