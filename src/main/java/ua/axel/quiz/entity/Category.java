@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -22,4 +23,17 @@ public class Category {
 	@Column(name = "title")
 	@NotNull(message = "Title cannot be null")
 	private String title;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Category category = (Category) o;
+		return id.equals(category.id) && title.equals(category.title);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, title);
+	}
 }
